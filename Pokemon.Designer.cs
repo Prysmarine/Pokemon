@@ -105,6 +105,7 @@ namespace Pokemon
             this.iconTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.swordShieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.legendsArceusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -939,7 +940,8 @@ namespace Pokemon
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem});
+            this.exitToolStripMenuItem,
+            this.fileToolStripMenuItem1});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -947,7 +949,7 @@ namespace Pokemon
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -981,6 +983,12 @@ namespace Pokemon
             this.legendsArceusToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.legendsArceusToolStripMenuItem.Text = "Brilliant Diamond/Shining Pearl";
             this.legendsArceusToolStripMenuItem.Click += new System.EventHandler(this.legendsArceusToolStripMenuItem_Click);
+            // 
+            // fileToolStripMenuItem1
+            // 
+            this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
+            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.fileToolStripMenuItem1.Text = "File";
             // 
             // Pokemon
             // 
@@ -1084,6 +1092,7 @@ namespace Pokemon
         private System.Windows.Forms.ToolStripMenuItem legendsArceusToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem1;
     }
 }
 
