@@ -63,8 +63,8 @@
 
 Weakness Calculator
 
-Choose your type from the left hand menu, there is a tab above to change between type 1 and 2
-To clear a type click on the type to the right you wish to remove (just above the weakness circles)</value>
+Choose your type from the left hand menu, click the same type to remove it. 
+If you select a second type it will be added to the secondary typing. </value>
   </data>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>

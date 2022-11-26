@@ -1,159 +1,140 @@
 ﻿/*
     Pokemon "Pokedex" 
-    By Prysmatic Productions
-        Prysmarine
-    Last Updated May 26, 2022
 */ 
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Console;
 
 namespace Pokemon
 {
     public partial class Pokemon : Form
     {
-        private List<Button> _buttonGroup1 = new List<Button>();
-        private List<Button> _buttonGroup2 = new List<Button>();
-        private Button button1;
+        private Button buttonRead;
         private Button button2;
+        List<Mon> Mons = new List<Mon>();
+        List<String> Names = new List<String>();
+        
         public Pokemon()
         {
             InitializeComponent();
-            _buttonGroup1.Add(btnBug1);
-            _buttonGroup1.Add(btnDark1);
-            _buttonGroup1.Add(btnDragon1);
-            _buttonGroup1.Add(btnElectric1);
-            _buttonGroup1.Add(btnFairy1);
-            _buttonGroup1.Add(btnFighting1);
-            _buttonGroup1.Add(btnFire1);
-            _buttonGroup1.Add(btnFlying1);
-            _buttonGroup1.Add(btnGhost1);
-            _buttonGroup1.Add(btnGrass1);
-            _buttonGroup1.Add(btnGround1);
-            _buttonGroup1.Add(btnIce1);
-            _buttonGroup1.Add(btnNormal1);
-            _buttonGroup1.Add(btnPoison1);
-            _buttonGroup1.Add(btnPsychic1);
-            _buttonGroup1.Add(btnRock1);
-            _buttonGroup1.Add(btnSteel1);
-            _buttonGroup1.Add(btnWater1);
 
-            _buttonGroup2.Add(btnBug2);
-            _buttonGroup2.Add(btnDark2);
-            _buttonGroup2.Add(btnDragon2);
-            _buttonGroup2.Add(btnElectric2);
-            _buttonGroup2.Add(btnFairy2);
-            _buttonGroup2.Add(btnFighting2);
-            _buttonGroup2.Add(btnFire2);
-            _buttonGroup2.Add(btnFlying2);
-            _buttonGroup2.Add(btnGhost2);
-            _buttonGroup2.Add(btnGrass2);
-            _buttonGroup2.Add(btnGround2);
-            _buttonGroup2.Add(btnIce2);
-            _buttonGroup2.Add(btnNormal2);
-            _buttonGroup2.Add(btnPoison2);
-            _buttonGroup2.Add(btnPsychic2);
-            _buttonGroup2.Add(btnRock2);
-            _buttonGroup2.Add(btnSteel2);
-            _buttonGroup2.Add(btnWater2);
+            using (StreamReader sr = new StreamReader(@"pokemon.csv"))
+            {
+                while (sr.Peek() >= 0)
+                {
+                    string str;
+                    string[] strArray;
+                    str = sr.ReadLine();
+                    strArray = str.Split(',');
+                    Mon currentMon = new Mon();
+                    currentMon.dex = strArray[0];
+                    currentMon.name = strArray[1];
+                    currentMon.form = strArray[2];
+                    currentMon.type1 = strArray[3];
+                    currentMon.type2 = strArray[4];
+                    currentMon.egg1 = strArray[5];
+                    currentMon.egg2 = strArray[6];
+                    currentMon.hp = strArray[7];
+                    currentMon.atk = strArray[8];
+                    currentMon.def = strArray[9];
+                    currentMon.satk = strArray[10];
+                    currentMon.sdef = strArray[11];
+                    currentMon.spd = strArray[12];
+                    currentMon.total = strArray[13];
+                    currentMon.gen = strArray[14];
+                    Mons.Add(currentMon);
+                }
+
+            }
+            
+            //Populates the Names list
+            using (StreamReader sr = new StreamReader(@"pokemonlist.csv"))
+            {
+                while (sr.Peek() >= 0)
+                {
+                    string str;               
+                    str = sr.ReadLine();
+                    Names.Add(str);
+                }
+            }
+          
+            //Adds each name from the Names list to the combo box as an option
+            foreach (String x in Names)
+            {
+                comboBreed.Items.Add(x);
+            }
+
+            //Adds each name + form (if applicable) to the Stat Lookup tab combo box
+            foreach (Mon x in Mons)
+            {
+                if (x.form != "")
+                {
+                    comboLook.Items.Add(x.form + " " + x.name);
+                }
+                else
+                    comboLook.Items.Add(x.name);
+                
+            }
+
+            comboNature.SelectedIndex = 25;
+            level.Value = 50;
         }
 
-        //When The First Type Is Selected
+        //When The Type Is Selected
         private void CheckSelected1(object sender, EventArgs e)
         {
-            if (button1 != null)
-            {
-                button1.Enabled = true;
-            }
 
             Button btn = (Button)sender;
 
-
-                btn.Enabled = false;
+            if (lblType1.Tag is null)
+            {
                 lblType1.Image = btn.Image;
                 lblType1.Tag = btn.Tag;
-
-                foreach (Button x in _buttonGroup2)
+            }
+            else if (lblType1.Tag != null)
+            {
+                if(lblType1.Tag == btn.Tag)
                 {
-                    if (x.Tag == btn.Tag)
+                    lblType1.Image = null;
+                    lblType1.Tag = null;
+                }
+                else if(lblType1.Tag != btn.Tag)
+                {
+                    if (lblType2.Tag != btn.Tag)
                     {
-                        x.Enabled = false;
+                        lblType2.Image = btn.Image;
+                        lblType2.Tag = btn.Tag;
                     }
-                    else
+                    else if(lblType2.Tag == btn.Tag)
                     {
-                        x.Enabled = true;
+                        lblType2.Image = null;
+                        lblType2.Tag = null;
                     }
                 }
-                RedundancyCheck();
+            }
 
-            button1 = btn;
+            if (lblType1.Tag is null && lblType2.Tag != null)
+            {
+                lblType1.Image = lblType2.Image;
+                lblType1.Tag = lblType2.Tag;
+                lblType2.Image = null;
+                lblType2.Tag = null;
+            }
+
 
             Output();                    
         }
 
-        //When The Second Type Is Selected
-        private void CheckSelected2(object sender, EventArgs e)
-        {
-            if (button2 != null)
-            {
-                button2.Enabled = true;
-            }
-
-            Button btn = (Button)sender;
-
-                btn.Enabled = false;
-                lblType2.Image = btn.Image;
-                lblType2.Tag = btn.Tag;
-                foreach (Button x in _buttonGroup1)
-                {
-                    if (x.Tag == btn.Tag)
-                    {
-                        x.Enabled = false;
-                    }
-                    else
-                        x.Enabled = true;
-                }
-                RedundancyCheck();
-
-            button2 = btn;
-
-            Output();
-        }
-
-        /*
-            Makes Sure Buttons are Disabled
-            So Can't Double Select Typings
-        */
-
-        private void RedundancyCheck()
-        {
-            foreach (Button z in _buttonGroup1)
-            {
-                if (z.Tag == lblType1.Tag || z.Tag == lblType2.Tag)
-                {
-                    z.Enabled = false;
-                }
-                else
-                    z.Enabled = true;
-            }
-
-            foreach (Button w in _buttonGroup2)
-            {
-                if (w.Tag == lblType2.Tag || w.Tag == lblType1.Tag)
-                {
-                    w.Enabled = false;
-                }
-                else
-                    w.Enabled = true;
-            }
-        }
 
         //Sets the Text On The Type Circles
         private void Output()
@@ -201,6 +182,9 @@ namespace Pokemon
                     break;
                 case "Poison":
                     Weakness.WeakCalc(.5, 1, 1, 1, .5, .5, 1, 1, 1, .5, 2, 1, 1, .5, 2, 1, 1, 1);
+                    break;
+                case "Psychic":
+                    Weakness.WeakCalc(2, 2, 1, 1, 1, .5, 1, 1, 2, 1, 1, 1, 1, 1, .5, 1, 1, 1);
                     break;
                 case "Rock":
                     Weakness.WeakCalc(1, 1, 1, 1, 1, 2, .5, .5, 1, 0, 2, 1, .5, 1, .5, 1, 2, 2);
@@ -260,6 +244,9 @@ namespace Pokemon
                 case "Poison":
                     Weakness.WeakCalc(.5, 1, 1, 1, .5, .5, 1, 1, 1, .5, 2, 1, 1, .5, 2, 1, 1, 1);
                     break;
+                case "Psychic":
+                    Weakness.WeakCalc(2, 2, 1, 1, 1, .5, 1, 1, 2, 1, 1, 1, 1, 1, .5, 1, 1, 1);
+                    break;
                 case "Rock":
                     Weakness.WeakCalc(1, 1, 1, 1, 1, 2, .5, .5, 1, 0, 2, 1, .5, 1, .5, 1, 2, 2);
                     break;
@@ -295,24 +282,6 @@ namespace Pokemon
             WaterWeak.Text = Weakness.output(17);
 
             Weakness.Reset();
-        }
-
-        //When The Type 1 Label is Clicked
-        private void lblType1_Click(object sender, EventArgs e)
-        {
-            lblType1.Tag = null;
-            lblType1.Image = null;
-            RedundancyCheck();
-            Output();
-        }
-
-        //When The Type 2 Label is Clicked
-        private void lblType2_Click(object sender, MouseEventArgs e)
-        {
-            lblType2.Tag = null;
-            lblType2.Image = null;
-            RedundancyCheck();
-            Output();
         }
 
         private void swordShieldToolStripMenuItem_Click(object sender, EventArgs e)
@@ -354,10 +323,9 @@ namespace Pokemon
             this.RockWeak.Image = Properties.Resources.Rock64_swsh;
             this.SteelWeak.Image = Properties.Resources.Steel64_swsh;
             this.WaterWeak.Image = Properties.Resources.Water64_swsh;
-
-            btnSync();
         }
 
+        //This is the Brilliant Diamond/Shining Pearl Tool Strip Option
         private void legendsArceusToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.btnBug1.Image = Properties.Resources.Bug_bdsp;
@@ -397,36 +365,297 @@ namespace Pokemon
             this.RockWeak.Image = Properties.Resources.Rock64_bdsp;
             this.SteelWeak.Image = Properties.Resources.Steel64_bdsp;
             this.WaterWeak.Image = Properties.Resources.Water64_bdsp;
-
-            btnSync();
         }
-
-        private void btnSync()
-        {
-            btnBug2.Image = btnBug1.Image;
-            btnDark2.Image = btnDark1.Image;
-            btnDragon2.Image = btnDragon1.Image;
-            btnElectric2.Image = btnElectric1.Image;
-            btnFairy2.Image = btnFairy1.Image;
-            btnFighting2.Image = btnFighting1.Image;
-            btnFire2.Image = btnFire1.Image;
-            btnFlying2.Image = btnFlying1.Image;
-            btnGhost2.Image = btnGhost1.Image;
-            btnGrass2.Image = btnGrass1.Image;
-            btnGround2.Image = btnGround1.Image;
-            btnIce2.Image = btnIce1.Image;
-            btnNormal2.Image = btnNormal1.Image;
-            btnPoison2.Image = btnPoison1.Image;
-            btnPsychic2.Image = btnPsychic2.Image;
-            btnRock2.Image = btnRock1.Image;
-            btnSteel2.Image = btnSteel1.Image;
-            btnWater2.Image = btnWater1.Image;
-        }
-
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+        //The Search Button On the Breeding Matchups Tab
+        private void buttonRead_Click(object sender, EventArgs e)
+        {
+
+            listTest.Items.Clear();
+            string i = "", j= "";
+
+
+            foreach(Mon x in Mons)
+            {
+                if (x.name == comboBreed.SelectedItem.ToString())
+                {
+                    if (x.form != "Mega")
+                        {
+                        if (x.egg1 == "No Eggs Discovered")
+                        {
+                            listTest.Items.Add("Cannot Breed");
+                            i = x.egg1;
+                        }
+                        else
+                        {
+                            i = x.egg1;
+                            j = x.egg2;
+                        }
+                    }
+                    
+                }            
+            }
+
+            if (i != "No Eggs Discovered")
+            {
+                foreach (Mon z in Mons)
+                {
+                    if (z.egg1 != "No Eggs Discovered")
+                    {
+                        if (z.egg1 == i || z.egg2 == i || z.egg1 == j || z.egg2 == j || z.egg1 == "Ditto")
+                        {
+                            if (z.form != "")
+                            {
+                                listTest.Items.Add(z.name + " - " + z.form);
+                            }
+                            else
+                                listTest.Items.Add(z.name);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void selectedMon(object sender, EventArgs e)
+        {
+            foreach (Mon x in Mons)
+            {
+                if (x.form != "")
+                {
+                    if (x.form + " " + x.name == comboLook.Text)
+                    {
+                        lblHP.Text = x.hp;
+                        lblAtk.Text = x.atk;
+                        lblDef.Text = x.def;
+                        lblSpeAtk.Text = x.satk;
+                        lblSpeDef.Text = x.sdef;
+                        lblSpeed.Text = x.spd;
+                    }
+                }
+                else if (x.name == comboLook.Text)
+                {
+                    lblHP.Text = x.hp;
+                    lblAtk.Text = x.atk;
+                    lblDef.Text = x.def;
+                    lblSpeAtk.Text = x.satk;
+                    lblSpeDef.Text = x.sdef;
+                    lblSpeed.Text = x.spd;
+                }                     
+            }
+            natureUpdate(sender, e);
+        }
+
+        private void natureUpdate(object sender, EventArgs e)
+        {
+            int plus = 0, minus = 0;
+            natureDefault();
+
+            /*
+                atk     -  1
+                def     -  2
+                satk    -  3
+                sdef    -  4
+                speed   -  5
+            */
+            switch(comboNature.SelectedIndex)
+            {
+                case 0: case 6: case 12: case 18: case 24:
+                    break;
+                case 1: case 2: case 3: case 4:
+                    lblAtkNat.Text = "Plus";
+                    plus = 1;
+                    switch (comboNature.SelectedIndex)
+                    {
+                        case 1:
+                            lblDefNat.Text = "Minus";
+                            minus = 2;
+                            break;
+                        case 2:
+                            lblSpeedNat.Text = "Minus";
+                            minus = 5;
+                            break;
+                        case 3:
+                            lblSpeAtkNat.Text = "Minus";
+                            minus = 3;
+                            break;
+                        case 4:
+                            lblSpeDefNat.Text = "Minus";
+                            minus = 4;
+                            break;
+                        default:
+                            lblHPNat.Text = "Error";
+                            break;
+                    }
+                    break;
+                case 5: case 7: case 8: case 9:
+                    lblDefNat.Text = "Plus";
+                    plus = 2;
+                    switch (comboNature.SelectedIndex)
+                    {
+                        case 5:
+                            lblAtkNat.Text = "Minus";
+                            minus = 1;
+                            break;
+                        case 7:
+                            lblSpeedNat.Text = "Minus";
+                            minus = 5;
+                            break;
+                        case 8:
+                            lblSpeAtkNat.Text = "Minus";
+                            minus = 3;
+                            break;
+                        case 9:
+                            lblSpeDefNat.Text = "Minus";
+                            minus = 4;
+                            break;
+                        default:
+                            lblHPNat.Text = "Error";
+                            break;
+                    }
+                    break;
+                case 10: case 11: case 13: case 14:
+                    lblSpeedNat.Text = "Plus";
+                    plus = 5;
+                    switch (comboNature.SelectedIndex)
+                    {
+                        case 10:
+                            lblAtkNat.Text = "Minus";
+                            minus = 1; 
+                            break;
+                        case 11:
+                            lblDefNat.Text = "Minus";
+                            minus = 2;
+                            break;
+                        case 13:
+                            lblSpeAtkNat.Text = "Minus";
+                            minus = 3;
+                            break;
+                        case 14:
+                            lblSpeDefNat.Text = "Minus";
+                            minus = 4;
+                            break;
+                        default:
+                            lblHPNat.Text = "Error";
+                            break;
+                    }
+                    break;
+                case 15: case 16: case 17: case 19:
+                    lblSpeAtkNat.Text = "Plus";
+                    plus = 3;
+                    switch (comboNature.SelectedIndex)
+                    {
+                        case 15:
+                            lblAtkNat.Text = "Minus";
+                            minus = 1;
+                            break;
+                        case 16:
+                            lblDefNat.Text = "Minus";
+                            minus = 2;
+                            break;
+                        case 17:
+                            lblSpeedNat.Text = "Minus";
+                            minus = 5;
+                            break;
+                        case 19:
+                            lblSpeDefNat.Text = "Minus";
+                            minus = 4;
+                            break;
+                        default:
+                            lblHPNat.Text = "Error";
+                            break;
+                    }
+                    break;
+                case 20: case 21: case 22: case 23:
+                    lblSpeDefNat.Text = "Plus";
+                    plus = 4;
+                    switch (comboNature.SelectedIndex)
+                    {
+                        case 20:
+                            lblAtkNat.Text = "Minus";
+                            minus = 1;
+                            break;
+                        case 21:
+                            lblDefNat.Text = "Minus";
+                            minus = 2;
+                            break;
+                        case 22:
+                            lblSpeedNat.Text = "Minus";
+                            minus = 5;
+                            break;
+                        case 23:
+                            lblSpeAtkNat.Text = "Minus";
+                            minus = 3;
+                            break;
+                        default:
+                            lblHPNat.Text = "Error";
+                            break;
+                    }
+                    break;
+                                                 
+            }//End of Outer Switch
+            /*
+            Pass in order
+                Base
+                    HP, ATK, DEF, SATK, SDEF, SPEED, Nature+, Nature-
+
+                IV
+                    HP, ATK, DEF, SATK, SDEF, SPEED
+
+                EV
+                    HP, ATK, DEF, SATK, SDEF, SPEED
+            */
+            bool ready = int.TryParse(lblHP.Text, out _);
+            if (ready)
+            {
+                Nature.statIn(
+                    Int32.Parse(lblHP.Text), Int32.Parse(lblAtk.Text), Int32.Parse(lblDef.Text), Int32.Parse(lblSpeAtk.Text), Int32.Parse(lblSpeDef.Text), Int32.Parse(lblSpeed.Text), plus, minus, Convert.ToInt32(level.Value),
+                    Convert.ToInt32(ivHP.Value), Convert.ToInt32(ivAtk.Value), Convert.ToInt32(ivDef.Value), Convert.ToInt32(ivSpeAtk.Value), Convert.ToInt32(ivSpeDef.Value), Convert.ToInt32(ivSpeed.Value),
+                    Convert.ToInt32(evHP.Value), Convert.ToInt32(evAtk.Value), Convert.ToInt32(evDef.Value), Convert.ToInt32(evSpeAtk.Value), Convert.ToInt32(evSpeDef.Value), Convert.ToInt32(evSpeed.Value)
+                    );
+            }
+            else
+                natureDefault();
+            
+            lblHPFin.Text = Nature.output(0);
+            lblAtkFin.Text = Nature.output(1);
+            lblDefFin.Text = Nature.output(2);
+            lblSpeAtkFin.Text = Nature.output(3);
+            lblSpeDefFin.Text = Nature.output(4);
+            lblSpeedFin.Text = Nature.output(5);
+
+            int j = Convert.ToInt32(evHP.Value + evAtk.Value + evDef.Value + evSpeAtk.Value + evSpeDef.Value + evSpeed.Value);
+            if (j > 508)
+            {
+                evTotal.ForeColor = Color.Red;
+            }
+            else
+                evTotal.ForeColor = Color.Black;
+
+            evTotal.Text = j.ToString();
+
+            int i = 508 - j;
+            evRemain.Text = i.ToString();
+
+            if (i < 0)
+            {
+                evRemain.ForeColor = Color.Red;
+            }
+            else
+                evRemain.ForeColor = Color.Black;
+        }
+
+        private void natureDefault()
+        {
+            lblHPNat.Text = "-";
+            lblAtkNat.Text = "-";
+            lblDefNat.Text = "-";
+            lblSpeAtkNat.Text = "-";
+            lblSpeDefNat.Text = "-";
+            lblSpeedNat.Text = "-";
         }
     }
     //End of Class
