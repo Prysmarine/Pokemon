@@ -1374,15 +1374,15 @@ namespace Pokemon
             // swordShieldToolStripMenuItem
             // 
             this.swordShieldToolStripMenuItem.Name = "swordShieldToolStripMenuItem";
-            this.swordShieldToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.swordShieldToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.swordShieldToolStripMenuItem.Text = "Sword/Shield";
             this.swordShieldToolStripMenuItem.Click += new System.EventHandler(this.swordShieldToolStripMenuItem_Click);
             // 
             // legendsArceusToolStripMenuItem
             // 
             this.legendsArceusToolStripMenuItem.Name = "legendsArceusToolStripMenuItem";
-            this.legendsArceusToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.legendsArceusToolStripMenuItem.Text = "Brilliant Diamond/Shining Pearl";
+            this.legendsArceusToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.legendsArceusToolStripMenuItem.Text = "Scarlet/Violet";
             this.legendsArceusToolStripMenuItem.Click += new System.EventHandler(this.legendsArceusToolStripMenuItem_Click);
             // 
             // Pokemon
@@ -1392,7 +1392,9 @@ namespace Pokemon
             this.ClientSize = new System.Drawing.Size(1069, 539);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "Pokemon";
             this.Text = "Pokemon";
             this.groupBox2.ResumeLayout(false);

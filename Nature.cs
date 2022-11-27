@@ -8,6 +8,8 @@ using System.Windows.Forms;
 
 namespace Pokemon
 {
+    //For calculating Pokemon Stats
+    //Probably needs to be renamed to something like statCalc
     internal class Nature
     {
         static double[] Stats = new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 50};

@@ -284,6 +284,7 @@ namespace Pokemon
             Weakness.Reset();
         }
 
+        //This is the Sword/Shield Tool Strip Option
         private void swordShieldToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.btnBug1.Image = Properties.Resources.Bug_swsh;
@@ -325,7 +326,7 @@ namespace Pokemon
             this.WaterWeak.Image = Properties.Resources.Water64_swsh;
         }
 
-        //This is the Brilliant Diamond/Shining Pearl Tool Strip Option
+        //This is the Scarlet/Violet Tool Strip Option
         private void legendsArceusToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.btnBug1.Image = Properties.Resources.Bug_bdsp;
@@ -371,7 +372,9 @@ namespace Pokemon
         {
             Application.Exit();
         }
+
         //The Search Button On the Breeding Matchups Tab
+        //Potentially Remove the Breeding Matchups Button and Replace it with update on change
         private void buttonRead_Click(object sender, EventArgs e)
         {
 
