@@ -1,0 +1,30 @@
+Hello! Thank you for checking out this project.
+
+This has been an ever increasing project as I continue to work on it
+but the main goal has always been the same: to create an offline resource
+to use for your Pokemon adventure. What a full "offline" resource counts
+as exactly has changed multiple times over the course of creating this.
+
+Currently this includes:
+  Weakness Calculator
+  Breeding Matchup Table
+  Stat Calculator
+
+I have been working on this slowly, as it's definitely required a good bit
+of learning and problem solving beyond what I knew to start. Namely how to
+handle the offline requirement that I've set for myself. As it currently
+stands there are a few more things I'd like to add hopefully in the near(ish)
+future. 
+
+Will Include:
+  Generation Filters (At least start with Sword/Shield and going forward
+    will debate going back farther. This will be implemented in the breeding
+    matchups and stat calculator tabs)
+    
+  Stat Comparison Between Two Pokemon
+  
+  A Living Dex Tracker (This one will be a bit farther off as it's going
+    to be a lot more involved than *just* a dex tracker)
+    
+This is a side project for me to practice and learn some new tricks, so progress
+may get rather slow at times. 
